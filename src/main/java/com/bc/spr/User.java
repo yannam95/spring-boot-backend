@@ -7,16 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="user")
 public class User {
 	
-	@Id
+	
 	@Column
 	
 	private int id;
-	
+@Id
+@Size(max=32)
 	@Column
     private String emailAddress;
 	
