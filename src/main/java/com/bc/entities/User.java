@@ -1,4 +1,4 @@
-package com.bc.spr;
+package com.bc.entities;
 
 
 
@@ -14,13 +14,14 @@ import javax.validation.constraints.Size;
 public class User {
 	
 	
+
+   @Id
+  @Size(max=32)
+	@Column
+    private String emailAddress;
 	@Column
 	
 	private int id;
-@Id
-@Size(max=32)
-	@Column
-    private String emailAddress;
 	
 	
 
