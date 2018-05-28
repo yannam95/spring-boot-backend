@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bc.Service.IUserInterface;
+import com.bc.Service.UserService;
 import com.bc.entities.User;
 import com.bc.exceptions.NoUserFound;
 import com.bc.repositories.UserRepository;
@@ -24,14 +26,14 @@ public class UserController {
 	
 	
 	@Autowired
-	private UserRepository userRepository;
+	private IUserInterface userService;
 
 	
 	
 
 	@GetMapping("/users")
-	public List<User> getUsers() throws NoUserFound{
-		List<User> totuser=userRepository.findAll();
+	public List<User> getUsers() throws Exception{
+		List<User> totuser=userService.getUsers();
 		
 		if(totuser!=null && totuser.size()>0)
 		{
@@ -42,8 +44,8 @@ public class UserController {
 	}
 
 @GetMapping("/user/{id}")	
-public Optional<User> getUser(@PathVariable String id) throws NoUserFound {
-	Optional<User> u = userRepository.findById(id);
+public Optional<User> getUser(@PathVariable String id) throws Exception {
+	Optional<User> u = userService.getUser(id);
 	if(u==null) {
 		throw new NoUserFound("there's is no id of this type");
 	}
@@ -52,19 +54,17 @@ public Optional<User> getUser(@PathVariable String id) throws NoUserFound {
 }
 
 	@DeleteMapping("/users/user/{id}")
-	public boolean deleteUser(@PathVariable String id) {
-		userRepository.deleteById(id);
+	public boolean deleteUser(@PathVariable String id) throws Exception {
+		userService.deleteUser(id);
 		return true;
 	}
 
-	@PostMapping("/users/user")
-	public User updateUser(@RequestBody User user) {
-		return userRepository.save(user);	
+	@PostMapping("/users/user/{id}")
+	public void updateUser(@RequestBody User user,@PathVariable String id) throws Exception {
+		 userService.addUser(user,id);	
+		 
 	}
 
-	@PutMapping("/users/user/{id}")
-	public User upduser(@RequestBody User user,@PathVariable String id) {
-		return userRepository.save(user);
-				}
+	
 
 }
